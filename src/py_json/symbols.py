@@ -1,0 +1,6 @@
+LBRACE = "{"
+RBRACE = "}"
+LBRACKET = "["
+RBRACKET = "]"
+COLON = ":"
+COMMA = ","
