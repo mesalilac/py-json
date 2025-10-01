@@ -34,5 +34,5 @@ class Token:
 
 @dataclass
 class Lexer:
-    def lex(self) -> list[Token]:
+    def tokens(self) -> list[Token]:
         raise NotImplementedError
