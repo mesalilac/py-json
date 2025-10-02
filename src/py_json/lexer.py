@@ -36,19 +36,19 @@ class Token:
 
 @dataclass
 class Lexer:
-    source: str
-    pos: int = 0
-    length: int = field(init=False)
+    _source: str
+    _pos: int = 0
+    _length: int = field(init=False)
     tokens: list[Token] = field(default_factory=list)
-    line: int = 1
-    column: int = 1
+    _line: int = 1
+    _column: int = 1
 
     def __post__init__(self):
-        self.length = len(self.source)
+        self._length = len(self._source)
         self.tokens = self._lex()
 
     @staticmethod
-    def is_number(s: str) -> bool:
+    def _is_number(s: str) -> bool:
         try:
             int(s)
             return True
@@ -56,28 +56,28 @@ class Lexer:
             return False
 
     @staticmethod
-    def is_float(s: str) -> bool:
+    def _is_float(s: str) -> bool:
         try:
             float(s)
             return True
         except ValueError:
             return False
 
-    def advance(self, by: int = 1) -> str | None:
+    def _advance(self, by: int = 1) -> str | None:
         for _ in range(by):
-            if self.pos >= self.length:
+            if self._pos >= self._length:
                 return None
-            ch = self.source[self.pos]
-            self.pos += 1
+            ch = self._source[self._pos]
+            self._pos += 1
             if ch == "\n":
-                self.line += 1
-                self.column = 1
+                self._line += 1
+                self._column = 1
             else:
-                self.column += 1
+                self._column += 1
 
         return ch
 
-    def push_token(self, type: TokenType, value: TokenValueType = None) -> None:
+    def _push_token(self, type: TokenType, value: TokenValueType = None) -> None:
         value = value
 
         match type:
@@ -97,13 +97,13 @@ class Lexer:
                 value = symbols.COMMA
 
         self.tokens.append(
-            Token(type=type, value=value, position=(self.line, self.column))
+            Token(type=type, value=value, position=(self._line, self._column))
         )
 
-    def peek(self, offset: int = 0) -> str | None:
-        pos: int = self.pos + offset
+    def _peek(self, offset: int = 0) -> str | None:
+        pos: int = self._pos + offset
 
-        return self.source[pos] if pos < self.length else None
+        return self._source[pos] if pos < self._length else None
 
     def _lex(self) -> list[Token]:
         raise NotImplementedError
