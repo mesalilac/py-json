@@ -16,7 +16,6 @@ class TokenType(Enum):
     RBRACKET = auto()  # ]
     COLON = auto()  # :
     COMMA = auto()  # ,
-    NEWLINE = auto()
 
     # Literal Value Tokens
     STRING = auto()
@@ -70,7 +69,7 @@ class Lexer:
                 return None
             ch = self.source[self.pos]
             self.pos += 1
-            if ch == symbols.NEWLINE:
+            if ch == "\n":
                 self.line += 1
                 self.column = 1
             else:
@@ -96,8 +95,6 @@ class Lexer:
                 value = symbols.COLON
             case TokenType.COMMA:
                 value = symbols.COMMA
-            case TokenType.NEWLINE:
-                value = symbols.NEWLINE
 
         self.tokens.append(
             Token(type=type, value=value, position=(self.line, self.column))
