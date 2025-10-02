@@ -24,6 +24,7 @@ class TokenType(Enum):
     FALSE = auto()
     NULL = auto()  # JSON null
 
+    ILLEGAL = auto()
     EOF = auto()  # End of file Token
 
 
