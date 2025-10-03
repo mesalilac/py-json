@@ -173,10 +173,19 @@ class Lexer:
 
                 buffer = ""
 
-                while (
-                    self._source[self._pos] != symbols.DOUBLE_QUOTE
-                    and self._source[self._pos - 1] == "\\"
-                ):
+                while self._pos < self._length:
+                    curr_ch = self._source[self._pos]
+
+                    if curr_ch == symbols.DOUBLE_QUOTE:
+                        backslashes = 0
+                        i = self._pos - 1
+
+                        while i >= 0 and self._source[i] == "\\":
+                            backslashes += 1
+                            i -= 1
+                        if backslashes % 2 == 0:  # If even it's not escaped
+                            break
+
                     buffer += self._source[self._pos]
                     self._advance()
 
