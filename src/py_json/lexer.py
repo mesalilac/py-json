@@ -44,9 +44,9 @@ class Lexer:
     _line: int = 1
     _column: int = 1
 
-    def __post__init__(self):
+    def __post_init__(self):
         self._length = len(self._source)
-        self.tokens = self._lex()
+        self._lex()
 
     @staticmethod
     def _is_number(s: str) -> bool:
@@ -106,5 +106,86 @@ class Lexer:
 
         return self._source[pos] if pos < self._length else None
 
-    def _lex(self) -> list[Token]:
-        raise NotImplementedError
+    def _lex(self) -> None:
+        while self._pos < self._length:
+            ch: str = self._source[self._pos]
+
+            if ch == symbols.NEWLINE:
+                self._advance()
+            elif ch.isspace():
+                self._advance()
+            elif ch == symbols.COMMA:
+                self._push_token(TokenType.COMMA)
+                self._advance()
+            elif ch == symbols.COLON:
+                self._push_token(TokenType.COLON)
+                self._advance()
+            elif ch == symbols.LBRACKET:
+                self._push_token(TokenType.LBRACKET)
+                self._advance()
+            elif ch == symbols.RBRACKET:
+                self._push_token(TokenType.RBRACKET)
+                self._advance()
+            elif ch == symbols.LBRACE:
+                self._push_token(TokenType.LBRACE)
+                self._advance()
+            elif ch == symbols.RBRACE:
+                self._push_token(TokenType.RBRACE)
+                self._advance()
+            elif ch.isalpha():
+                buffer = ""
+
+                while self._source[self._pos].isalpha():
+                    buffer += self._source[self._pos]
+                    self._advance()
+
+                if buffer.lower() == "true":
+                    self._push_token(TokenType.TRUE)
+                elif buffer.lower() == "false":
+                    self._push_token(TokenType.FALSE)
+                elif buffer.lower() == "null":
+                    self._push_token(TokenType.NULL)
+                else:
+                    self._push_token(
+                        TokenType.ILLEGAL, buffer[-1] if buffer else buffer
+                    )
+            elif ch.isdigit() or ch in "-+.":
+                buffer = ""
+
+                while (
+                    self._source[self._pos].isdigit()
+                    or self._source[self._pos].isalpha()
+                    or self._source[self._pos].lower() in "-+._"
+                ):
+                    buffer += self._source[self._pos]
+                    self._advance()
+
+                if self._is_number(buffer) and "." not in buffer:
+                    self._push_token(TokenType.NUMBER, int(buffer))
+                elif self._is_float(buffer):
+                    self._push_token(TokenType.NUMBER, float(buffer))
+                else:
+                    self._push_token(
+                        TokenType.ILLEGAL, buffer[-1] if buffer else buffer
+                    )
+            elif ch == symbols.DOUBLE_QUOTE:
+                self._advance()
+
+                buffer = ""
+
+                while (
+                    self._source[self._pos] != symbols.DOUBLE_QUOTE
+                    and self._source[self._pos - 1] == "\\"
+                ):
+                    buffer += self._source[self._pos]
+                    self._advance()
+
+                if self._source[self._pos] == symbols.DOUBLE_QUOTE:
+                    self._advance()
+
+                self._push_token(TokenType.STRING, buffer)
+            else:
+                self._push_token(TokenType.ILLEGAL, ch)
+                self._advance()
+
+        self._push_token(TokenType.EOF)
