@@ -5,7 +5,7 @@ def collect_types(text: str):
     return [t.type for t in Lexer(text).tokens]
 
 
-def with_eof(*types) -> list[Type]:
+def with_eof(*types: Type) -> list[Type]:
     return [*types, Type.EOF]
 
 
@@ -74,7 +74,7 @@ def test_array_with_mixed_types():
         *(Type.STRING, Type.COMMA),
         *(Type.TRUE, Type.COMMA),
         *(Type.FALSE, Type.COMMA),
-        *(Type.NULL),
+        Type.NULL,
         Type.RBRACKET,
     )
 
@@ -101,7 +101,7 @@ def test_object_with_array_value():
         Type.LBRACKET,
         *(Type.NUMBER, Type.COMMA),
         *(Type.NUMBER, Type.COMMA),
-        *(Type.NUMBER),
+        Type.NUMBER,
         Type.RBRACKET,
         Type.RBRACE,
     )
@@ -119,7 +119,7 @@ def test_object_with_nested_mixed():
         Type.LBRACKET,
         *(Type.TRUE, Type.COMMA),
         *(Type.FALSE, Type.COMMA),
-        *(Type.NULL),
+        Type.NULL,
         Type.RBRACKET,
         Type.RBRACE,
         Type.RBRACE,
