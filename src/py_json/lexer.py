@@ -152,7 +152,7 @@ class Lexer:
             elif ch.isdigit() or ch in "-+.":
                 buffer = ""
 
-                while (
+                while self._pos < self._length and (
                     self._source[self._pos].isdigit()
                     or self._source[self._pos].isalpha()
                     or self._source[self._pos].lower() in "-+._"
