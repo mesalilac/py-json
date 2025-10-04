@@ -149,7 +149,7 @@ class Lexer:
                     self._push_token(
                         TokenType.ILLEGAL, buffer[-1] if buffer else buffer
                     )
-            elif ch.isdigit() or ch in "-+.":
+            elif ch.isdigit() or ch in "-.":
                 buffer = ""
 
                 while self._pos < self._length and (
