@@ -1,8 +1,7 @@
-import py_json.symbols as symbols
-
 from dataclasses import dataclass, field
 from enum import Enum, auto
 
+from py_json import symbols
 
 type TokenPositionType = tuple[int, int]
 type TokenValueType = str | int | float | bool | None
@@ -44,7 +43,7 @@ class Lexer:
     _line: int = 1
     _column: int = 1
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self._length = len(self._source)
         self._lex()
 
@@ -52,17 +51,19 @@ class Lexer:
     def _is_number(s: str) -> bool:
         try:
             int(s)
-            return True
         except ValueError:
             return False
+        else:
+            return True
 
     @staticmethod
     def _is_float(s: str) -> bool:
         try:
             float(s)
-            return True
         except ValueError:
             return False
+        else:
+            return True
 
     def _advance(self, by: int = 1) -> str | None:
         for _ in range(by):
@@ -78,10 +79,8 @@ class Lexer:
 
         return ch
 
-    def _push_token(self, type: TokenType, value: TokenValueType = None) -> None:
-        value = value
-
-        match type:
+    def _push_token(self, _type: TokenType, value: TokenValueType = None) -> None:
+        match _type:
             case TokenType.NULL:
                 value = "null"
             case TokenType.LBRACE:
@@ -98,7 +97,7 @@ class Lexer:
                 value = symbols.COMMA
 
         self.tokens.append(
-            Token(type=type, value=value, position=(self._line, self._column))
+            Token(type=_type, value=value, position=(self._line, self._column)),
         )
 
     def _peek(self, offset: int = 0) -> str | None:
@@ -110,9 +109,7 @@ class Lexer:
         while self._pos < self._length:
             ch: str = self._source[self._pos]
 
-            if ch == symbols.NEWLINE:
-                self._advance()
-            elif ch.isspace():
+            if ch == symbols.NEWLINE or ch.isspace():
                 self._advance()
             elif ch == symbols.COMMA:
                 self._push_token(TokenType.COMMA)
@@ -147,7 +144,8 @@ class Lexer:
                     self._push_token(TokenType.NULL)
                 else:
                     self._push_token(
-                        TokenType.ILLEGAL, buffer[-1] if buffer else buffer
+                        TokenType.ILLEGAL,
+                        buffer[-1] if buffer else buffer,
                     )
             elif ch.isdigit() or ch == "-":
                 buffer = ""
@@ -165,7 +163,8 @@ class Lexer:
                     self._push_token(TokenType.NUMBER, float(buffer))
                 else:
                     self._push_token(
-                        TokenType.ILLEGAL, buffer[-1] if buffer else buffer
+                        TokenType.ILLEGAL,
+                        buffer[-1] if buffer else buffer,
                     )
             elif ch == symbols.DOUBLE_QUOTE:
                 self._advance()

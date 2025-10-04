@@ -1,4 +1,5 @@
-from py_json.lexer import Lexer, TokenType as Type
+from py_json.lexer import Lexer
+from py_json.lexer import TokenType as Type
 
 
 def collect_types(text: str):

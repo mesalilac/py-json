@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 from .lexer import TokenPositionType
 
 type JsonValueTypes = str | int | float | bool | None | JsonData
