@@ -154,8 +154,7 @@ class Lexer:
 
                 while self._pos < self._length and (
                     self._source[self._pos].isdigit()
-                    or self._source[self._pos].isalpha()
-                    or self._source[self._pos].lower() in "-+._"
+                    or self._source[self._pos].lower() in "-+._e"
                 ):
                     buffer += self._source[self._pos]
                     self._advance()
