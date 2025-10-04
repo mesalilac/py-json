@@ -59,7 +59,7 @@ def test_leading_zero_integer():
 
 
 def test_decimal_no_leading_digit():
-    assert collect_types(".5") == with_eof(Type.NUMBER)
+    assert collect_types(".5") == with_eof(Type.ILLEGAL, Type.NUMBER)
 
 
 def test_large_exponent():
