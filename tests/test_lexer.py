@@ -36,15 +36,15 @@ def test_string_with_space():
 
 
 def test_string_with_escaped_quote():
-    assert collect_types('"he said \\"hi\\""') == with_eof(Type.STRING)
+    assert collect_types(r'"he said \"hi\""') == with_eof(Type.STRING)
 
 
 def test_string_with_unicode_escape():
-    assert collect_types('"\\u0041"') == with_eof(Type.STRING)
+    assert collect_types(r'"\u0041"') == with_eof(Type.STRING)
 
 
 def test_string_with_backslash_escape():
-    assert collect_types('"line1\\nline2"') == with_eof(Type.STRING)
+    assert collect_types(r'"line1\nline2"') == with_eof(Type.STRING)
 
 
 def test_zero():
