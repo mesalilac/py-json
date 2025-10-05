@@ -105,7 +105,7 @@ class Lexer:
 
         return self._source[pos] if pos < self._length else None
 
-    def _lex(self) -> None:
+    def _lex(self) -> None:  # noqa: C901 PLR0912 PLR0915
         while self._pos < self._length:
             ch: str = self._source[self._pos]
 
