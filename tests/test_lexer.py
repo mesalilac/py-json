@@ -44,7 +44,7 @@ def test_string_with_unicode_escape():
 
 
 def test_string_with_backslash_escape():
-    assert collect_types(r'"line1\nline2"') == with_eof(Type.STRING)
+    assert collect_types(r'"line1\\nline2"') == with_eof(Type.STRING)
 
 
 def test_zero():
