@@ -105,6 +105,33 @@ class Lexer:
 
         return self._source[pos] if pos < self._length else None
 
+    @staticmethod
+    def _unescape_string(s: str) -> str:
+        escapes = {
+            '"': '"',
+            "\\": "\\",
+            "/": "/",
+            "b": "\b",
+            "f": "\f",
+            "n": "\n",
+            "r": "\r",
+            "t": "\t",
+        }
+
+        result = []
+        i = 0
+
+        while i < len(s):
+            if s[i] == "\\":
+                i += 1
+                if i < len(s):
+                    result.append(escapes.get(s[i], s[i]))
+            else:
+                result.append(s[i])
+            i += 1
+
+        return "".join(result)
+
     def _lex(self) -> None:  # noqa: C901 PLR0912 PLR0915
         while self._pos < self._length:
             ch: str = self._source[self._pos]
@@ -190,7 +217,9 @@ class Lexer:
                 if self._source[self._pos] == symbols.DOUBLE_QUOTE:
                     self._advance()
 
-                self._push_token(TokenType.STRING, buffer)
+                value: str = self._unescape_string(buffer)
+
+                self._push_token(TokenType.STRING, value)
             else:
                 self._push_token(TokenType.ILLEGAL, ch)
                 self._advance()
