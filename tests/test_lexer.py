@@ -2,6 +2,10 @@ from py_json.lexer import Lexer
 from py_json.lexer import TokenType as Type
 
 
+def collect_values(text: str):
+    return [t.value for t in Lexer(text).tokens]
+
+
 def collect_types(text: str):
     return [t.type for t in Lexer(text).tokens]
 
@@ -45,6 +49,18 @@ def test_string_with_unicode_escape():
 
 def test_string_with_backslash_escape():
     assert collect_types(r'"line1\\nline2"') == with_eof(Type.STRING)
+
+
+def test_string_unescape_quote():
+    assert collect_values(r'"he said \"hi\""') == ['he said "hi"', None]
+
+
+def test_string_unescape_unicode():
+    assert collect_values(r'"\\u0041"') == ["\\u0041", None]
+
+
+def test_string_unescape_unicode_convert():
+    assert collect_values(r'"\u0041"') == ["A", None]
 
 
 def test_zero():
