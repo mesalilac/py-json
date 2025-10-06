@@ -17,5 +17,5 @@ class ParserError(Exception):
 
 @dataclass
 class Parser:
-    def parse(self) -> JsonData:
+    def parse(self) -> JsonValueTypes:
         raise NotImplementedError
