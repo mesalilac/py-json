@@ -126,7 +126,13 @@ class Lexer:
             if s[i] == "\\":
                 i += 1
                 if i < len(s):
-                    result.append(escapes.get(s[i], s[i]))
+                    ch = s[i]
+                    if ch in escapes:
+                        result.append(escapes[ch])
+                    else:
+                        result.append("\\" + ch)
+                else:
+                    result.append("\\")
             else:
                 result.append(s[i])
             i += 1
