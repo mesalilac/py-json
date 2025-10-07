@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from enum import Enum, auto
+from io import StringIO
 
 from py_json import symbols
 
@@ -157,46 +158,50 @@ class Lexer:
                 self._push_token(TokenType.RBRACE)
                 self._advance()
             elif ch.isalpha():
-                buffer = ""
+                buffer = StringIO()
 
                 while self._source[self._pos].isalpha():
-                    buffer += self._source[self._pos]
+                    buffer.write(self._source[self._pos])
                     self._advance()
 
-                if buffer.lower() == "true":
+                value = buffer.getvalue()
+
+                if value.lower() == "true":
                     self._push_token(TokenType.TRUE)
-                elif buffer.lower() == "false":
+                elif value.lower() == "false":
                     self._push_token(TokenType.FALSE)
-                elif buffer.lower() == "null":
+                elif value.lower() == "null":
                     self._push_token(TokenType.NULL)
                 else:
                     self._push_token(
                         TokenType.ILLEGAL,
-                        buffer[-1] if buffer else buffer,
+                        value[-1] if value else value,
                     )
             elif ch.isdigit() or ch == "-":
-                buffer = ""
+                buffer = StringIO()
 
                 while self._pos < self._length and (
                     self._source[self._pos].isdigit()
                     or self._source[self._pos].lower() in "-+._e"
                 ):
-                    buffer += self._source[self._pos]
+                    buffer.write(self._source[self._pos])
                     self._advance()
 
-                if self._is_number(buffer) and "." not in buffer:
-                    self._push_token(TokenType.NUMBER, int(buffer))
-                elif self._is_float(buffer):
-                    self._push_token(TokenType.NUMBER, float(buffer))
+                value = buffer.getvalue()
+
+                if self._is_number(value) and "." not in value:
+                    self._push_token(TokenType.NUMBER, int(value))
+                elif self._is_float(value):
+                    self._push_token(TokenType.NUMBER, float(value))
                 else:
                     self._push_token(
                         TokenType.ILLEGAL,
-                        buffer[-1] if buffer else buffer,
+                        value[-1] if value else value,
                     )
             elif ch == symbols.DOUBLE_QUOTE:
                 self._advance()
 
-                buffer = ""
+                buffer = StringIO()
 
                 while self._pos < self._length:
                     curr_ch = self._source[self._pos]
@@ -211,13 +216,13 @@ class Lexer:
                         if backslashes % 2 == 0:  # If even it's not escaped
                             break
 
-                    buffer += self._source[self._pos]
+                    buffer.write(self._source[self._pos])
                     self._advance()
 
                 if self._source[self._pos] == symbols.DOUBLE_QUOTE:
                     self._advance()
 
-                value: str = self._unescape_string(buffer)
+                value: str = self._unescape_string(buffer.getvalue())
 
                 self._push_token(TokenType.STRING, value)
             else:
