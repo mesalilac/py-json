@@ -59,8 +59,8 @@ def test_string_unescape_unicode():
     assert collect_values(r'"\\u0041"') == ["\\u0041", None]
 
 
-# def test_string_unescape_unicode_convert(): # TODO
-#     assert collect_values(r'"\u0041"') == ["A", None]
+def test_string_unescape_unicode_convert():
+    assert collect_values(r'"\u0041"') == [r"\u0041", None]
 
 
 def test_zero():
