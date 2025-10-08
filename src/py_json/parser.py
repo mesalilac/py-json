@@ -7,10 +7,9 @@ type JsonData = dict[str, JsonValueTypes] | list[JsonValueTypes]
 
 
 class ParserError(Exception):
-    def __init__(self, message: str, position: TokenPositionType, line: str) -> None:
+    def __init__(self, message: str, position: TokenPositionType) -> None:
         self.message = message
         self.position = position
-        self.line = line
 
         super().__init__(f"{position[0]}:{position[1]} {self.message}")
 
