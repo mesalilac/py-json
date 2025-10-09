@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from .lexer import TokenPositionType
+from py_json.lexer import TokenPositionType
 
 type JsonValueTypes = str | int | float | bool | None | JsonData
 type JsonData = dict[str, JsonValueTypes] | list[JsonValueTypes]
