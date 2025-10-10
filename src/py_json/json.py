@@ -17,10 +17,12 @@ class Json:
         """Load json from a string."""
         raise NotImplementedError
 
+    @staticmethod
     def dump(obj: JsonData, fp: TextIO) -> None:
         """Serialize into json and write to file."""
         raise NotImplementedError
 
+    @staticmethod
     def dumps(obj: JsonData) -> str:
         """Serialize into json and return as a string."""
         raise NotImplementedError
