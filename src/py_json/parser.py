@@ -1,6 +1,8 @@
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
-from py_json.lexer import TokenPositionType
+if TYPE_CHECKING:
+    from py_json.lexer import TokenPositionType
 
 type JsonValueTypes = str | int | float | bool | None | JsonData
 type JsonData = dict[str, JsonValueTypes] | list[JsonValueTypes]
