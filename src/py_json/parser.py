@@ -1,8 +1,8 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from py_json.lexer import TokenPositionType
+    from py_json.lexer import Token, TokenPositionType
 
 type JsonValueTypes = str | int | float | bool | None | JsonData
 type JsonData = dict[str, JsonValueTypes] | list[JsonValueTypes]
@@ -18,6 +18,14 @@ class ParserError(Exception):
 
 @dataclass
 class Parser:
-    def parse(self) -> JsonData:
+    _tokens: list[Token]
+    _pos: int = 0
+    _length: int = field(init=False)
+
+    def __post_init__(self) -> None:
+        self._length = len(self._tokens)
+        self._parse()
+
+    def _parse(self) -> JsonData:
         """Parse list tokens and return `{}` or `[]`."""
         raise NotImplementedError
