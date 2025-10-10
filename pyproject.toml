@@ -26,4 +26,5 @@ ignore = ["D100", "D101", "D105", "D107"]
     "S311",    # Standard pseudo-random generators are not suitable for cryptographic purposes
     "ANN201",  # missing-return-type-undocumented-public-function
     "D103",    # undocumented-public-function
+    "INP001",  # implicit-namespace-package
 ]
