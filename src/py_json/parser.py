@@ -19,4 +19,5 @@ class ParserError(Exception):
 @dataclass
 class Parser:
     def parse(self) -> JsonData:
+        """Parse list tokens and return `{}` or `[]`."""
         raise NotImplementedError
