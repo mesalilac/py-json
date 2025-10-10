@@ -24,8 +24,7 @@ class Parser:
 
     def __post_init__(self) -> None:
         self._length = len(self._tokens)
-        self._parse()
 
-    def _parse(self) -> JsonData:
+    def parse(self) -> JsonData:
         """Parse list tokens and return `{}` or `[]`."""
         raise NotImplementedError
