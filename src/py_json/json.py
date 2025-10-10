@@ -7,11 +7,11 @@ from .parser import JsonData
 @dataclass
 class Json:
     @staticmethod
-    def loads(s: str) -> JsonData:
+    def load(fp: TextIO) -> JsonData:
         raise NotImplementedError
 
     @staticmethod
-    def load(fp: TextIO) -> JsonData:
+    def loads(s: str) -> JsonData:
         raise NotImplementedError
 
     def dump(obj: JsonData, fp: TextIO) -> None:
