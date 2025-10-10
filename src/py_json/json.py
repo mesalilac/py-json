@@ -1,7 +1,8 @@
 from dataclasses import dataclass
-from typing import TextIO
+from typing import TYPE_CHECKING, TextIO
 
-from .parser import JsonData
+if TYPE_CHECKING:
+    from .parser import JsonData
 
 
 @dataclass
