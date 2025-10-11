@@ -70,7 +70,7 @@ class Lexer:
         for _ in range(by):
             if self._pos >= self._length:
                 return None
-            ch = self._source[self._pos]
+            ch: str = self._source[self._pos]
             self._pos += 1
             if ch == "\n":
                 self._line += 1
@@ -119,8 +119,8 @@ class Lexer:
             "t": "\t",
         }
 
-        result = []
-        i = 0
+        result: list[str] = []
+        i: int = 0
 
         while i < len(s):
             if s[i] == "\\":
@@ -210,11 +210,11 @@ class Lexer:
                 buffer = StringIO()
 
                 while self._pos < self._length:
-                    curr_ch = self._source[self._pos]
+                    curr_ch: str = self._source[self._pos]
 
                     if curr_ch == symbols.DOUBLE_QUOTE:
-                        backslashes = 0
-                        i = self._pos - 1
+                        backslashes: int = 0
+                        i: int = self._pos - 1
 
                         while i >= 0 and self._source[i] == "\\":
                             backslashes += 1
